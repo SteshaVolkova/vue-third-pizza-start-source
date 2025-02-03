@@ -80,9 +80,13 @@
                     :key="ingredientType.id"
                     class="ingredients__item"
                   >
-                    <span :class="`filling filling--${ingredientType.value}`">
+                    <div class="filling">
+                      <img
+                        :src="getImage(ingredientType.image)"
+                        :alt="ingredientType.name"
+                      />
                       {{ ingredientType.name }}
-                    </span>
+                    </div>
 
                     <div class="counter counter--orange ingredients__counter">
                       <button
@@ -156,8 +160,8 @@ const sizeItems = sizesJSON.map(normalizeSize);
 const ingredientItems = ingredientsJSON.map(normalizeIngredients);
 const sauceItems = saucesJSON.map(normalizeSauces);
 
-const getImage = image => {
+const getImage = (image) => {
   // https://vitejs.dev/guide/assets.html#new-url-url-import-meta-url
   return new URL(`../assets/img/${image}`, import.meta.url).href;
-}
+};
 </script>
