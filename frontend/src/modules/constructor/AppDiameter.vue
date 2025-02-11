@@ -14,8 +14,9 @@
             type="radio"
             name="diameter"
             :value="sizeType.value"
+            :checked="sizeType.value === modelValue"
             class="visually-hidden"
-            checked
+            @input="emit('update:modelValue', sizeType.value)"
           />
           <span>{{ sizeType.name }}</span>
         </label>
@@ -26,16 +27,22 @@
 
 <script setup>
 defineProps({
+  modelValue: {
+    type: String,
+    default: "",
+  },
   sizeItems: {
     type: Array,
-    required: true,
+    default: () => [],
   },
 });
+
+const emit = defineEmits(["update:modelValue"]);
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/ds-system/ds";
-@import "@/assets/scss/mixins/mixins";
+@import "@/assets/scss/ds-system/ds.scss";
+@import "@/assets/scss/mixins/mixins.scss";
 
 .content__diameter {
   width: 373px;
@@ -43,46 +50,23 @@ defineProps({
   margin-bottom: 15px;
 }
 
-.title {
-  box-sizing: border-box;
-  width: 100%;
-  margin: 0;
-
-  color: $black;
-
-  &--big {
-    @include b-s36-h42;
-  }
-
-  &--small {
-    @include b-s18-h21;
-  }
-}
-
 .diameter__input {
   margin-right: 8.7%;
   margin-bottom: 20px;
   padding-top: 7px;
   padding-bottom: 6px;
-
   cursor: pointer;
 
   span {
     @include r-s16-h19;
-
     position: relative;
-
     padding-left: 46px;
-
     &::before {
       @include p_center_v;
-
       width: 36px;
       height: 36px;
-
       content: "";
       transition: 0.3s;
-
       border-radius: 50%;
       background-color: $green-100;
       background-image: url("@/assets/img/diameter.svg");

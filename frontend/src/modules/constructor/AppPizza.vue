@@ -1,64 +1,75 @@
 <template>
-  <div class="content__pizza">
-    <label class="input">
-      <span class="visually-hidden">Название пиццы</span>
-      <input type="text" name="pizza_name" placeholder="Введите название пиццы">
-    </label>
-
-    <div class="content__constructor">
-      <div class="pizza pizza--foundation--big-tomato">
+  <div class="content__constructor">
+    <app-drop @drop="emit('drop', $event.value)">
+      <div class="pizza" :class="`pizza--foundation--${dough}-${sauce}`">
         <div class="pizza__wrapper">
-          <div class="pizza__filling pizza__filling--ananas"></div>
-          <div class="pizza__filling pizza__filling--bacon"></div>
-          <div class="pizza__filling pizza__filling--cheddar"></div>
+          <div
+            v-for="(value, key) in pizzaIngredients"
+            :key="key"
+            class="pizza__filling"
+            :class="[
+              `pizza__filling--${key}`,
+              value === TWO_INGREDIENTS && 'pizza__filling--second',
+              value === THREE_INGREDIENTS && 'pizza__filling--third',
+            ]"
+          />
         </div>
       </div>
-    </div>
-
-    <div class="content__result">
-      <p>Итого: 0 ₽</p>
-      <button type="button" class="button" disabled>Готовьте!</button>
-    </div>
+    </app-drop>
   </div>
 </template>
 
+<script setup>
+import { computed } from "vue";
+import AppDrop from "@/common/components/AppDrop.vue";
+
+const TWO_INGREDIENTS = 2;
+const THREE_INGREDIENTS = 3;
+
+const props = defineProps({
+  dough: {
+    type: String,
+    default: "light",
+  },
+  sauce: {
+    type: String,
+    default: "tomato",
+  },
+  ingredients: {
+    type: Object,
+    default: () => ({}),
+  },
+});
+
+const emit = defineEmits(["drop"]);
+
+const pizzaIngredients = computed(() => {
+  /*
+   * props.ingredients - это объект с ингредиентами вида { ингредиент: количество }
+   * при помощи reduce нам нужно оставить только те, количество которые больше 0
+   * для этого перебираем каждую пару [ингредиент, количество]
+   * и если количество больше 0, добавляем в объект-результат
+   */
+  return Object.entries(props.ingredients).reduce((result, entry) => {
+    /* [ингредиент, количество] */
+    const [key, value] = entry;
+
+    if (value > 0) {
+      /* ингредиент присутствует в пицце */
+      result[key] = value;
+    }
+
+    return result;
+  }, {});
+});
+</script>
+
 <style lang="scss" scoped>
-@import "@/assets/scss/ds-system/ds";
-@import "@/assets/scss/mixins/mixins";
-
-.pizza {
-  position: relative;
-
-  display: block;
-
-  box-sizing: border-box;
-  width: 100%;
-
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100%;
-
-  &--foundation--big-creamy {
-    background-image: url("@/assets/img/foundation/big-creamy.svg");
-  }
-
-  &--foundation--big-tomato {
-    background-image: url("@/assets/img/foundation/big-tomato.svg");
-  }
-
-  &--foundation--small-creamy {
-    background-image: url("@/assets/img/foundation/small-creamy.svg");
-  }
-
-  &--foundation--small-tomato {
-    background-image: url("@/assets/img/foundation/small-tomato.svg");
-  }
-}
-
-.content__pizza {
-  width: 373px;
-  margin-top: 15px;
-  margin-bottom: 15px;
+.content__constructor {
+  width: 315px;
+  margin-top: 25px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .pizza__wrapper {
@@ -210,160 +221,32 @@
   }
 }
 
-.button {
-  $bl: &;
-  @include b-s18-h21;
-  font-family: inherit;
+.pizza {
+  position: relative;
+
   display: block;
+
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-  transition: 0.3s;
-  text-align: center;
-  color: $white;
-  border: none;
-  border-radius: 8px;
-  outline: none;
-  box-shadow: $shadow-medium;
-  background-color: $green-500;
+  width: 100%;
 
-  &:hover:not(:active):not(:disabled) {
-    background-color: $green-400;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+
+  &--foundation--large-creamy {
+    background-image: url("@/assets/img/foundation/big-creamy.svg");
   }
 
-  &:active:not(:disabled) {
-    background-color: $green-600;
+  &--foundation--large-tomato {
+    background-image: url("@/assets/img/foundation/big-tomato.svg");
   }
 
-  &:focus:not(:disabled) {
-    opacity: 0.5;
+  &--foundation--light-creamy {
+    background-image: url("@/assets/img/foundation/small-creamy.svg");
   }
 
-  &:disabled {
-    background-color: $green-300;
-    color: rgba($white, 0.2);
-    cursor: default;
-  }
-
-  &--border {
-    background-color: transparent;
-    border: 1px solid $green-500;
-    color: $black;
-    box-shadow: none;
-
-    &:hover:not(:active):not(:disabled) {
-      color: $green-500;
-      border-color: $green-500;
-      background-color: transparent;
-    }
-
-    &:active:not(:disabled) {
-      color: $green-600;
-      border-color: $green-600;
-      background-color: transparent;
-    }
-
-    &:disabled {
-      opacity: 0.5;
-    }
-  }
-
-  &--transparent {
-    @include b-s14-h16;
-    background-color: transparent;
-    box-shadow: none;
-    color: $black;
-
-    &:hover:not(:active):not(:disabled) {
-      color: $red-800;
-      background-color: transparent;
-    }
-
-    &:active:not(:disabled) {
-      color: $red-900;
-      background-color: transparent;
-    }
-
-    &:disabled {
-      opacity: 0.25;
-    }
-  }
-
-  &--arrow {
-    &::before {
-      content: "";
-      background-image: url("@/assets/img/button-arrow.svg");
-      background-position: center;
-      background-repeat: no-repeat;
-      margin-right: 16px;
-      width: 18px;
-      height: 18px;
-      display: inline-block;
-      vertical-align: middle;
-      transform: translateY(-1px);
-    }
-  }
-
-  &--white {
-    background-color: $white;
-    color: $green-500;
-  }
-}
-
-.input {
-  display: block;
-
-  span {
-    @include r-s14-h16;
-
-    display: block;
-
-    margin-bottom: 4px;
-  }
-
-  input {
-    @include r-s16-h19;
-
-    display: block;
-
-    box-sizing: border-box;
-    width: 100%;
-    margin: 0;
-    padding: 8px 16px;
-
-    transition: 0.3s;
-
-    color: $black;
-    border: 1px solid $purple-400;
-    border-radius: 8px;
-    outline: none;
-    background-color: $white;
-
-    font-family: inherit;
-
-    &:focus {
-      border-color: $green-500;
-    }
-  }
-
-  &:hover {
-    input {
-      border-color: $black;
-    }
-  }
-
-  &--big-label {
-    display: flex;
-    align-items: center;
-
-    span {
-      @include b-s16-h19;
-
-      margin-right: 16px;
-
-      white-space: nowrap;
-    }
+  &--foundation--light-tomato {
+    background-image: url("@/assets/img/foundation/small-tomato.svg");
   }
 }
 </style>

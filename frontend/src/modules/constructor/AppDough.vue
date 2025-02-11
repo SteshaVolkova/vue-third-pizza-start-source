@@ -3,7 +3,7 @@
     <div class="sheet">
       <h2 class="title title--small sheet__title">Выберите тесто</h2>
 
-      <div class="sheet__content dough">
+      <div class="sheet__content">
         <label
           v-for="doughType in doughItems"
           :key="doughType.id"
@@ -13,8 +13,9 @@
             type="radio"
             name="dough"
             :value="doughType.value"
+            :checked="doughType.value === modelValue"
             class="visually-hidden"
-            checked
+            @input="emit('update:modelValue', doughType.value)"
           />
           <img :src="getImage(doughType.image)" :alt="doughType.name" />
 
@@ -30,16 +31,22 @@
 import { getImage } from "@/common/helpers/normalize";
 
 defineProps({
+  modelValue: {
+    type: String,
+    default: "",
+  },
   doughItems: {
     type: Array,
-    required: true,
+    default: () => [],
   },
 });
+
+const emit = defineEmits(["update:modelValue"]);
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/ds-system/ds";
-@import "@/assets/scss/mixins/mixins";
+@import "@/assets/scss/ds-system/ds.scss";
+@import "@/assets/scss/mixins/mixins.scss";
 
 .content__dough {
   width: 527px;
@@ -53,17 +60,13 @@ defineProps({
   margin-right: 8%;
   margin-bottom: 20px;
   padding-left: 50px;
-
   cursor: pointer;
 
   img {
     @include p_center-v;
-
     width: 36px;
     height: 36px;
-
     transition: 0.3s;
-
     border-radius: 50%;
   }
 
@@ -73,7 +76,6 @@ defineProps({
 
   span {
     @include l-s11-h13;
-
     display: block;
   }
 
@@ -87,21 +89,6 @@ defineProps({
     &:checked + img {
       box-shadow: $shadow-large;
     }
-  }
-}
-.title {
-  box-sizing: border-box;
-  width: 100%;
-  margin: 0;
-
-  color: $black;
-
-  &--big {
-    @include b-s36-h42;
-  }
-
-  &--small {
-    @include b-s18-h21;
   }
 }
 </style>

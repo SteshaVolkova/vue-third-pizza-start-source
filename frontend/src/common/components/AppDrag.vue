@@ -1,7 +1,7 @@
 <template>
   <div
     :draggable="draggable"
-    @dragstart.self="onDrag"
+    @dragstart.self="onDragStart"
     @dragover.prevent
     @dragenter.prevent
   >
@@ -10,25 +10,21 @@
 </template>
 
 <script setup>
-import { DATA_TRANSFER_PAYLOAD, MOVE } from '@/common/constants/index';
+import { DATA_TRANSFER_PAYLOAD } from "@/common/constants";
 
 const props = defineProps({
   draggable: {
     type: Boolean,
     default: false,
   },
-  transferData: {
+  dataTransfer: {
     type: Object,
     required: true,
   },
 });
 
-function onDrag({ dataTransfer }) {
-  dataTransfer.effectAllowed = MOVE;
-  dataTransfer.dropEffect = MOVE;
-  dataTransfer.setData(
-    DATA_TRANSFER_PAYLOAD,
-    JSON.stringify(props.transferData),
-  );
-}
+const onDragStart = ({ dataTransfer }) => {
+  const data = JSON.stringify(props.dataTransfer);
+  dataTransfer.setData(DATA_TRANSFER_PAYLOAD, data);
+};
 </script>
