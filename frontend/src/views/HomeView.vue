@@ -134,23 +134,6 @@ const updateIngredientAmount = (ingredient, count) => {
 <style lang="scss">
 @import "@/assets/scss/ds-system/ds.scss";
 @import "@/assets/scss/mixins/mixins.scss";
-
-.content {
-  padding-top: 20px;
-}
-
-.content__wrapper {
-  display: flex;
-  align-items: flex-start;
-  flex-wrap: wrap;
-
-  width: 920px;
-  margin: 0 auto;
-  padding-right: 2.12%;
-  padding-bottom: 30px;
-  padding-left: 2.12%;
-}
-
 .content__ingredients {
   width: 527px;
   margin-top: 15px;
@@ -180,110 +163,6 @@ const updateIngredientAmount = (ingredient, count) => {
   button {
     margin-left: 12px;
     padding: 16px 45px;
-  }
-}
-
-.sheet {
-  padding-top: 15px;
-
-  border-radius: 8px;
-  background-color: $white;
-  box-shadow: $shadow-light;
-}
-
-.sheet__title {
-  padding-right: 18px;
-  padding-left: 18px;
-}
-
-.sheet__content {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-
-  margin-top: 8px;
-  padding-top: 18px;
-  padding-right: 18px;
-  padding-left: 18px;
-
-  border-top: 1px solid rgba($green-500, 0.1);
-}
-
-.title {
-  box-sizing: border-box;
-  width: 100%;
-  margin: 0;
-
-  color: $black;
-
-  &--big {
-    @include b-s36-h42;
-  }
-
-  &--small {
-    @include b-s18-h21;
-  }
-}
-
-.radio {
-  cursor: pointer;
-
-  span {
-    @include r-s16-h19;
-
-    position: relative;
-
-    padding-left: 28px;
-
-    &:before {
-      @include p_center-v;
-
-      display: block;
-
-      box-sizing: border-box;
-      width: 20px;
-      height: 20px;
-
-      content: "";
-      transition: 0.3s;
-
-      border: 1px solid $purple-400;
-      border-radius: 50%;
-      background-color: $white;
-    }
-  }
-
-  &:hover {
-    input:not(:checked):not(:disabled) + span {
-      &:before {
-        border-color: $purple-800;
-      }
-    }
-  }
-
-  input {
-    display: none;
-
-    &:checked + span {
-      &:before {
-        border: 6px solid $green-500;
-      }
-    }
-
-    &:disabled {
-      & + span {
-        &:before {
-          border-color: $purple-400;
-          background-color: $silver-200;
-        }
-      }
-
-      &:checked + span {
-        &:before {
-          border: 6px solid $purple-400;
-        }
-      }
-    }
   }
 }
 </style>

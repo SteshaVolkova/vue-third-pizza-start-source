@@ -18,15 +18,12 @@
         </app-drag>
 
         <app-counter
+          class="ingredients__counter"
           :value="getValue(ingredientType.value)"
-          :disabled-minus="getValue(ingredientType.value) === 0"
-          :disabled-plus="
-            getValue(ingredientType.value) === MAX_INGREDIENT_COUNT
-          "
-          :class-counter="counter--orange ingredients__counter"
-          @decrementValue="decrementValue"
-          @inputValue="inputValue"
-          @incrementValue="incrementValue"
+          :min="0"
+          :max="MAX_INGREDIENT_COUNT"
+          @input="inputValue(ingredientType.value, $event)"
+          @increment="incrementValue(ingredientType.value)"
         />
       </li>
     </ul>
