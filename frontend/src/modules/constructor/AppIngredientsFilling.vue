@@ -58,10 +58,6 @@ const setValue = (ingredient, count) => {
   emit("update", ingredient, Number(count));
 };
 
-const decrementValue = (ingredient) => {
-  setValue(ingredient, getValue(ingredient) - 1);
-};
-
 const incrementValue = (ingredient) => {
   setValue(ingredient, getValue(ingredient) + 1);
 };
