@@ -10,7 +10,7 @@
       >
         <app-drag
           :data-transfer="ingredientType"
-          :draggable="getValue(ingredientType.value) < MAX_INGREDIENT_COUNT"
+          :draggable="values[ingredientType.id] < MAX_INGREDIENT_COUNT"
         >
           <span class="filling" :class="`filling--${ingredientType.value}`">
             {{ ingredientType.name }}
@@ -19,11 +19,10 @@
 
         <app-counter
           class="ingredients__counter"
-          :value="getValue(ingredientType.value)"
+          :value="values[ingredientType.id]"
           :min="0"
           :max="MAX_INGREDIENT_COUNT"
-          @input="inputValue(ingredientType.value, $event)"
-          @increment="incrementValue(ingredientType.value)"
+          @input="inputValue(ingredientType.id, $event)"
         />
       </li>
     </ul>
@@ -31,12 +30,11 @@
 </template>
 
 <script setup>
-import { toRef } from "vue";
 import { MAX_INGREDIENT_COUNT } from "@/common/constants";
 import AppDrag from "@/common/components/AppDrag.vue";
 import AppCounter from "@/common/components/AppCounter.vue";
 
-const props = defineProps({
+defineProps({
   values: {
     type: Object,
     default: () => ({}),
@@ -48,22 +46,13 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["update"]);
-const values = toRef(props, "values");
-
-const getValue = (ingredient) => {
-  return values.value[ingredient] ?? 0;
-};
 
 const setValue = (ingredient, count) => {
   emit("update", ingredient, Number(count));
 };
 
-const incrementValue = (ingredient) => {
-  setValue(ingredient, getValue(ingredient) + 1);
-};
-
 const inputValue = (ingredient, count) => {
-  return setValue(ingredient, Math.min(MAX_INGREDIENT_COUNT, Number(count)));
+  setValue(ingredient, Math.min(MAX_INGREDIENT_COUNT, Number(count)));
 };
 </script>
 
