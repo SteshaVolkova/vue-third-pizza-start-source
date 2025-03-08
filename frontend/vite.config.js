@@ -24,4 +24,11 @@ export default defineConfig({
       },
     },
   },
+  proxy: {
+    "/api": {
+      target: "https://pizza.vue.htmlacademy.pro/",
+      changeOrigin: true,
+      rewrite: (path) => path.replace(/^\/api/, ""),
+    },
+  },
 });
