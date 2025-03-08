@@ -5,7 +5,7 @@ export const routes = [
     path: "",
     name: "home",
     component: () => import("@/views/HomeView.vue"),
-    meta: { layout: "DefaultLayout" },
+    meta: { layout: "AppLayoutDefault" },
   },
   {
     path: "/login",
@@ -18,7 +18,7 @@ export const routes = [
     name: "cart",
     component: () => import("@/views/CartView.vue"),
     meta: {
-      layout: "DefaultLayout",
+      layout: "AppLayoutDefault",
     },
   },
   {
@@ -32,7 +32,7 @@ export const routes = [
     name: "user",
     component: () => import("@/views/UserView.vue"),
     meta: {
-      layout: "DefaultLayout",
+      layout: "AppLayoutDefault",
       middlewares: [isLoggedIn],
     },
     children: [

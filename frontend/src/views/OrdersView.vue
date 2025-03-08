@@ -111,7 +111,9 @@ const loadOrder = (order) => {
 .order__wrapper {
   display: flex;
   align-items: center;
+
   padding: 6px 16px;
+
   border-bottom: 1px solid rgba($green-500, 0.1);
 
   b {
@@ -141,9 +143,11 @@ const loadOrder = (order) => {
 
 .order__list {
   @include clear-list;
+
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
+
   margin-top: 24px;
   padding-right: 10px;
   padding-left: 10px;
