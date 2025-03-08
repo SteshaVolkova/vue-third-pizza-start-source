@@ -17,7 +17,7 @@
             class="visually-hidden"
             @input="emit('update:modelValue', doughType.id)"
           />
-          <img :src="getImage(doughType.image)" :alt="doughType.name" />
+          <img :src="getPublicImage(doughType.image)" :alt="doughType.name" />
 
           <b>{{ doughType.name }}</b>
           <span>{{ doughType.description }}</span>
@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { getImage } from "@/common/helpers/normalize";
+import { getPublicImage } from "@/common/helpers/public-image";
 
 defineProps({
   modelValue: {
