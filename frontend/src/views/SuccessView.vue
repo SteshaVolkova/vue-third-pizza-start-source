@@ -1,16 +1,18 @@
 <template>
-  <app-popup>
-    <router-link :to="{ name: redirectRouteName }" class="close">
-      <span class="visually-hidden">Закрыть попап</span>
-    </router-link>
-    <app-popup-title> Спасибо за заказ </app-popup-title>
-    <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
-    <app-popup-button>
-      <router-link :to="{ name: redirectRouteName }" class="button">
-        Отлично, я жду!
+  <transition name="fade" appear>
+    <app-popup>
+      <router-link :to="{ name: redirectRouteName }" class="close">
+        <span class="visually-hidden">Закрыть попап</span>
       </router-link>
-    </app-popup-button>
-  </app-popup>
+      <app-popup-title> Спасибо за заказ </app-popup-title>
+      <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
+      <app-popup-button>
+        <router-link :to="{ name: redirectRouteName }" class="button">
+          Отлично, я жду!
+        </router-link>
+      </app-popup-button>
+    </app-popup>
+  </transition>
 </template>
 
 <script setup>
@@ -23,6 +25,6 @@ import { useAuthStore } from "@/stores/auth";
 const authStore = useAuthStore();
 
 const redirectRouteName = computed(() =>
-  authStore.isAuthenticated ? "orders" : "home"
+  authStore.isAuthenticated ? "orders" : "home",
 );
 </script>
